@@ -1,0 +1,476 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model analisis {
+  id_analisis Int    @id @default(autoincrement())
+  id_ujian    Int
+  id_soal     Int
+  id_siswa    Int
+  jawaban     String @db.VarChar(100)
+}
+
+model bukuliterasi {
+  idBuku Int    @id @default(autoincrement())
+  judul  String @db.LongText
+  cover  String @db.LongText
+  isi    String @db.LongText
+  status Int
+}
+
+model bukunontext {
+  idBunon Int    @id @default(autoincrement())
+  judul   String @db.LongText
+  isi     String @db.LongText
+  cover   String @db.LongText
+  pdf     String @db.LongText
+  status  Int
+  idBuku  String @db.VarChar(30)
+}
+
+model kelas_tugas {
+  id_klstugas Int               @id @default(autoincrement())
+  id_tugas    Int
+  id_kelas    Int
+  id_jurusan  Int
+  aktif       kelas_tugas_aktif @default(N)
+}
+
+model kelas_ujian {
+  id_klsujian Int               @id @default(autoincrement())
+  id_ujian    Int
+  id_kelas    Int
+  id_jurusan  Int
+  aktif       kelas_ujian_aktif @default(N)
+}
+
+model kelas_ujianessay {
+  id_klsessay   Int                    @id @default(autoincrement())
+  id_ujianessay Int
+  id_kelas      Int
+  id_jurusan    Int
+  aktif         kelas_ujianessay_aktif @default(N)
+}
+
+model nilai {
+  id_nilai      Int      @id @default(autoincrement())
+  id_siswa      Int
+  id_ujian      String   @db.VarChar(100)
+  acak_soal     String   @db.Text
+  jawaban       String   @db.Text
+  sisa_waktu    DateTime @db.Time(0)
+  waktu_selesai DateTime @db.Time(0)
+  jml_benar     Int
+  jml_kosong    Int
+  jml_salah     Int
+  nilai         String   @db.VarChar(5)
+}
+
+model pesan {
+  id_pesan     Int                @id @default(autoincrement())
+  id_pengirim  String             @db.VarChar(30)
+  id_penerima  String             @db.VarChar(30)
+  tanggal      DateTime           @db.Date
+  isi_pesan    String             @db.LongText
+  sudah_dibaca pesan_sudah_dibaca
+  id_kelas     Int
+  id_jurusan   Int
+}
+
+model ptspas {
+  id_ptspas   Int     @id @default(autoincrement())
+  KURIKULUM   String? @db.VarChar(255)
+  JENJANG     String? @db.VarChar(255)
+  MAPEL       String? @db.VarChar(255)
+  KELAS       String? @db.VarChar(255)
+  JENIS_SOAL  String? @db.VarChar(255)
+  LINK_PDF    String? @db.VarChar(255)
+  LINK_WORD   String? @db.VarChar(255)
+  KISI_KISI_1 String? @db.VarChar(255)
+  KISI_KISI_2 String? @db.VarChar(255)
+  KISI_KISI_3 String? @db.VarChar(255)
+  KISI_KISI_4 String? @db.VarChar(255)
+  KODE        String? @db.VarChar(255)
+}
+
+model soal {
+  id_soal   Int         @id @default(autoincrement())
+  id_ujian  Int
+  soal      String      @db.Text
+  pilihan_1 String      @db.Text
+  pilihan_2 String      @db.Text
+  pilihan_3 String      @db.Text
+  pilihan_4 String      @db.Text
+  pilihan_5 String      @db.Text
+  kunci     Int
+  status    soal_status @default(Y)
+}
+
+model tb_admin {
+  id_admin     Int    @id @default(autoincrement())
+  nama_lengkap String @db.VarChar(50)
+  username     String @db.VarChar(50)
+  password     String @db.LongText
+  aktif        String @db.VarChar(5)
+  foto         String @db.VarChar(225)
+  kode_sekolah String @db.VarChar(30)
+  id_jurusan   String @db.VarChar(30)
+}
+
+model tb_guru {
+  id_guru      Int             @id @default(autoincrement())
+  nik          String          @db.VarChar(20)
+  nama_guru    String          @db.VarChar(120)
+  email        String          @db.VarChar(65)
+  password     String          @db.VarChar(255)
+  foto         String?         @db.VarChar(255)
+  status       String          @db.VarChar(5)
+  date_created DateTime        @db.Date
+  confirm      tb_guru_confirm
+  kode_sekolah String          @db.VarChar(30)
+  tb_roleguru  tb_roleguru[]
+}
+
+model tb_jajal {
+  idJajal  Int    @id @default(autoincrement())
+  nama     String @db.VarChar(30)
+  datafile String @db.LongText
+}
+
+model tb_jenisperangkat {
+  id_jenisperangkat Int    @id @default(autoincrement())
+  jenis_perangkat   String @db.VarChar(40)
+  kode_sekolah      String @db.VarChar(30)
+}
+
+model tb_jenistugas {
+  id_jenistugas Int    @id @default(autoincrement())
+  jenis_tugas   String @db.VarChar(60)
+}
+
+model tb_jenisujian {
+  id_jenis     Int    @id @default(autoincrement())
+  jenis_ujian  String @db.VarChar(60)
+  kode_sekolah String @db.VarChar(30)
+}
+
+model tb_log {
+  idlog    Int    @id @default(autoincrement())
+  id_siswa String @db.VarChar(200)
+  status   String @db.VarChar(200)
+  jmlakses String @db.VarChar(20)
+}
+
+model tb_master_jurusan {
+  id_jurusan      Int               @id @default(autoincrement())
+  jurusan         String            @db.VarChar(45)
+  kode_sekolah    String            @db.VarChar(30)
+  tb_roleguru     tb_roleguru[]
+  tb_materi_pusat tb_materi_pusat[]
+}
+
+model tb_master_kelas {
+  id_kelas        Int               @id @default(autoincrement())
+  kelas           String            @db.VarChar(45)
+  kode_sekolah    String            @db.VarChar(30)
+  tb_roleguru     tb_roleguru[]
+  tb_materi_pusat tb_materi_pusat[]
+}
+
+model tb_master_mapel {
+  id_mapel        Int               @id @default(autoincrement())
+  mapel           String            @db.VarChar(60)
+  kode_sekolah    String            @db.VarChar(30)
+  asetBupin       String            @db.VarChar(200)
+  tb_roleguru     tb_roleguru[]
+  tb_materi_pusat tb_materi_pusat[]
+}
+
+model tb_master_semester {
+  id_semester  Int           @id @default(autoincrement())
+  semester     String        @db.VarChar(45)
+  kode_sekolah String        @db.VarChar(30)
+  tb_roleguru  tb_roleguru[]
+}
+
+model tb_materi {
+  id_materi    Int              @id @default(autoincrement())
+  judul_materi String           @db.LongText
+  materi       String           @db.LongText
+  nama_file    String           @db.LongText
+  tipe_file    String           @db.VarChar(20)
+  ukuran_file  String           @db.VarChar(30)
+  file         String           @db.VarChar(255)
+  tgl_entry    String           @db.VarChar(30)
+  public       tb_materi_public
+  kode_sekolah String           @db.VarChar(30)
+  id_mapel     String           @db.VarChar(30)
+  id_kelas     String           @db.VarChar(30)
+  id_jurusan   String           @db.VarChar(30)
+  link_youtube String           @db.LongText
+  id_roleguru  String           @db.VarChar(30)
+}
+
+model tb_materi_pusat {
+  id_materi_pusat Int                    @id @default(autoincrement())
+  judul_materi    String                 @db.LongText
+  materi          String                 @db.LongText
+  nama_file       String                 @db.LongText
+  tipe_file       String                 @db.VarChar(20)
+  ukuran_file     String                 @db.VarChar(30)
+  file            String                 @db.VarChar(255)
+  tgl_entry       String                 @db.VarChar(30)
+  public          tb_materi_pusat_public
+  kode_sekolah    String                 @db.VarChar(30)
+  id_mapel        Int
+  id_kelas        Int
+  id_jurusan      Int
+  link_youtube    String                 @db.LongText
+  id_roleguru     String                 @db.VarChar(30)
+  mapel           tb_master_mapel        @relation(fields: [id_mapel], references: [id_mapel])
+  kelas           tb_master_kelas        @relation(fields: [id_kelas], references: [id_kelas])
+  jurusan         tb_master_jurusan      @relation(fields: [id_jurusan], references: [id_jurusan])
+}
+
+model tb_materi_pusatxx {
+  id_materi_pusat Int                      @id @default(autoincrement())
+  judul_materi    String                   @db.LongText
+  materi          String                   @db.LongText
+  nama_file       String                   @db.LongText
+  tipe_file       String                   @db.VarChar(30)
+  ukuran_file     String                   @db.VarChar(30)
+  file            String                   @db.VarChar(225)
+  tgl_entry       String                   @db.VarChar(30)
+  public          tb_materi_pusatxx_public
+  kode_sekolah    String                   @db.VarChar(30)
+  id_mapel        String                   @db.VarChar(30)
+  id_kelas        String                   @db.VarChar(30)
+  id_jurusan      String                   @db.VarChar(30)
+  link_youtube    String                   @db.LongText
+  id_roleguru     String                   @db.VarChar(30)
+}
+
+model tb_miting {
+  id_miting     Int    @id @default(autoincrement())
+  id_kelas      String @db.VarChar(30)
+  id_jurusan    String @db.VarChar(30)
+  id_guru       String @db.VarChar(30)
+  id_mapel      String @db.VarChar(30)
+  nama_rum      String @db.VarChar(50)
+  link_rum      String @db.LongText
+  status_miting String @db.VarChar(2)
+  kode_sekolah  String @db.VarChar(30)
+}
+
+model tb_perangkat {
+  id_perangkat      Int         @id @default(autoincrement())
+  judul             String      @db.VarChar(255)
+  nama_file         String      @db.VarChar(120)
+  tipe_file         String      @db.VarChar(20)
+  ukuran_file       String      @db.VarChar(30)
+  file              String      @db.VarChar(255)
+  isi_perangkat     String      @db.Text
+  id_jenisperangkat Int
+  tgl_entry         DateTime    @db.Date
+  publish           Int
+  id_roleguru       Int
+  kode_sekolah      String      @db.VarChar(30)
+  tb_roleguru       tb_roleguru @relation(fields: [id_roleguru], references: [id_roleguru], onDelete: Cascade, map: "tb_perangkat_ibfk_1")
+
+  @@index([id_roleguru], map: "id_roleguru")
+}
+
+model tb_roleguru {
+  id_roleguru        Int                @id @default(autoincrement())
+  id_guru            Int
+  id_kelas           Int
+  id_mapel           Int
+  id_semester        Int
+  id_jurusan         Int
+  tb_perangkat       tb_perangkat[]
+  tb_guru            tb_guru            @relation(fields: [id_guru], references: [id_guru], onDelete: Cascade, map: "tb_roleguru_ibfk_1")
+  tb_master_jurusan  tb_master_jurusan  @relation(fields: [id_jurusan], references: [id_jurusan], onDelete: Cascade, map: "tb_roleguru_ibfk_2")
+  tb_master_kelas    tb_master_kelas    @relation(fields: [id_kelas], references: [id_kelas], onDelete: Cascade, map: "tb_roleguru_ibfk_3")
+  tb_master_mapel    tb_master_mapel    @relation(fields: [id_mapel], references: [id_mapel], onDelete: Cascade, map: "tb_roleguru_ibfk_4")
+  tb_master_semester tb_master_semester @relation(fields: [id_semester], references: [id_semester], onDelete: Cascade, map: "tb_roleguru_ibfk_5")
+
+  @@index([id_guru], map: "id_guru")
+  @@index([id_jurusan], map: "id_jurusan")
+  @@index([id_kelas], map: "id_kelas")
+  @@index([id_mapel], map: "id_mapel")
+  @@index([id_semester], map: "id_semester")
+}
+
+model tb_sekolah {
+  id_sekolah   Int    @id @default(autoincrement())
+  nama_sekolah String @db.VarChar(120)
+  kepsek       String @db.VarChar(120)
+  textlogo     String @db.VarChar(10)
+  logo         String @db.VarChar(255)
+  copyright    String @db.VarChar(255)
+  kode_sekolah String @db.VarChar(30)
+  id_jurusan   String @db.VarChar(30)
+}
+
+model tb_siswa {
+  id_siswa     Int              @id @default(autoincrement())
+  nis          String           @db.VarChar(15)
+  nama_siswa   String           @db.VarChar(120)
+  jk           String           @db.VarChar(30)
+  password     String           @db.VarChar(255)
+  status       String           @db.VarChar(15)
+  aktif        String           @db.VarChar(30)
+  tingkat      String           @db.VarChar(20)
+  foto         String?          @db.VarChar(255)
+  id_kelas     Int
+  id_jurusan   Int
+  confirm      tb_siswa_confirm
+  kode_sekolah String           @db.VarChar(30)
+  status_login String           @db.VarChar(200)
+
+  @@index([id_jurusan], map: "id_jurusan")
+  @@index([id_kelas], map: "id_kelas")
+}
+
+model tb_tugas {
+  id_tugas      Int      @id @default(autoincrement())
+  id_jenistugas Int
+  judul_tugas   String   @db.VarChar(100)
+  isi_tugas     String   @db.Text
+  tanggal       DateTime @db.Date
+  waktu         Int
+  jml_anggota   Int
+  id_guru       Int
+  id_mapel      Int
+  id_semester   Int
+  kode_sekolah  String   @db.VarChar(30)
+}
+
+model tbl_hasil_to_gupin {
+  id_tbl_to Int    @id @default(autoincrement())
+  idSoal    String @db.VarChar(30)
+  idSiswa   String @db.VarChar(30)
+  idMapel   String @db.VarChar(30)
+  nilai     String @db.VarChar(30)
+  peringkat String @db.VarChar(30)
+}
+
+model tr_jawaban_gupin {
+  id_jawaban Int    @id @default(autoincrement())
+  id_siswa   String @db.VarChar(200)
+  id_mapel   String @db.VarChar(200)
+  id_soal    String @db.VarChar(200)
+  no_soal    String @db.VarChar(200)
+  id_ujian   String @db.VarChar(200)
+  jawaban    String @db.VarChar(200)
+  kunci      String @db.VarChar(200)
+  jenis      String @db.VarChar(1)
+}
+
+model tugas_siswa {
+  id_tgssiswa  Int      @id @default(autoincrement())
+  id_tugas     Int
+  subjek       String   @db.VarChar(120)
+  id_siswa     Int
+  kelompok     String   @db.Text
+  nama_file    String   @db.VarChar(120)
+  tipe_file    String   @db.VarChar(30)
+  ukuran_file  String   @db.VarChar(30)
+  file         String   @db.VarChar(255)
+  tgl_upload   DateTime @db.Date
+  ket          String   @db.Text
+  kode_sekolah String   @db.VarChar(30)
+}
+
+model ujian {
+  id_ujian     Int      @id @default(autoincrement())
+  judul        String   @db.VarChar(50)
+  tanggal      DateTime @db.Date
+  waktu        DateTime @db.Time(0)
+  jml_soal     Int
+  acak         String   @db.VarChar(100)
+  tipe         Int
+  id_jenis     Int
+  id_guru      Int
+  id_mapel     Int
+  id_semester  Int
+  kode_sekolah String   @db.VarChar(30)
+}
+
+model ujian_essay {
+  id_ujianessay Int      @id @default(autoincrement())
+  judul         String   @db.VarChar(50)
+  tanggal       DateTime @db.Date
+  jml_soal      Int
+  soal_essay    String   @db.Text
+  id_jenis      Int
+  id_guru       Int
+  id_mapel      Int
+  id_semester   Int
+  kode_sekolah  String   @db.VarChar(30)
+}
+
+model usercoba {
+  id        Int    @id
+  Name      String @db.VarChar(150)
+  Email     String @db.VarChar(150)
+  Mobile    String @db.VarChar(100)
+  Password  String @db.VarChar(150)
+  fcm_token String @db.VarChar(200)
+  status    Int
+}
+
+enum kelas_ujianessay_aktif {
+  Y
+  N
+}
+
+enum kelas_tugas_aktif {
+  Y
+  N
+}
+
+enum kelas_ujian_aktif {
+  Y
+  N
+}
+
+enum pesan_sudah_dibaca {
+  belum
+  sudah
+}
+
+enum tb_materi_pusat_public {
+  Y
+  N
+}
+
+enum tb_materi_pusatxx_public {
+  Y
+  N
+}
+
+enum tb_materi_public {
+  Y
+  N
+}
+
+enum tb_guru_confirm {
+  Yes
+  No
+}
+
+enum soal_status {
+  Y
+  N
+}
+
+enum tb_siswa_confirm {
+  Yes
+  No
+}
