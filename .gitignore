@@ -11,6 +11,12 @@
 # deps
 node_modules/
 
+# build
+dist/
+
+# prisma
+prisma/generated/
+
 # env
 .env
 .env.production
