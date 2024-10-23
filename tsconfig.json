@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
     "strict": true,
+    "esModuleInterop": true,
     "skipLibCheck": true,
+    "noEmit": true,
     "types": [
       "node"
     ],
     "outDir": "./dist",
-    "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx",
   },
   "exclude": ["node_modules"]
 }
