@@ -1,5 +1,9 @@
 .git
 .gitignore
+.github
 Dockerfile
 .dockerignore
+compose.yml
 node_modules
+dist
+*.md
