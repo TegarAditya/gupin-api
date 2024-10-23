@@ -5,14 +5,14 @@ FROM base AS builder
 RUN apk add --no-cache gcompat
 WORKDIR /app
 
-COPY package*json pnpm-lock.yaml tsconfig.json prisma src ./
+COPY . .
 
 RUN corepack enable
 
-RUN pnpm i --frozen-lockfile && \
-    pnpm dlx prisma generate && \
-    pnpm run build && \
-    pnpm prune --prod
+RUN pnpm install --frozen-lockfile
+RUN pnpm db:generate
+RUN pnpm build
+RUN pnpm prune --prod
 
 FROM base AS runner
 WORKDIR /app
@@ -25,6 +25,7 @@ COPY --from=builder --chown=hono:nodejs /app/dist /app/dist
 COPY --from=builder --chown=hono:nodejs /app/package.json /app/package.json
 
 USER hono
+
 EXPOSE 3000
 
-CMD ["node", "/app/dist/index.js"]
+CMD ["node", "/app/dist/index.cjs"]
