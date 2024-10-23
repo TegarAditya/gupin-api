@@ -1,0 +1,469 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Bank Soal and Materi API",
+    "version": "1.0.0",
+    "description": "API for fetching Bank Soal, Materi Digital, and Digital Books. This API spec is created for the purpose of providing OpenAPI Specification (OAS) v3.0.0"
+  },
+  "tags": [
+    {
+      "name": "Bank Soal",
+      "description": "API for fetching Bank Soal"
+    },
+    {
+      "name": "Materi Digital",
+      "description": "API for fetching Materi Digital"
+    },
+    {
+      "name": "E-Book Kurikulum Merdeka",
+      "description": "API for fetching E-Book Kurikulum Merdeka"
+    },
+    {
+      "name": "Health Check",
+      "description": "API for checking server health"
+    }
+  ],
+  "paths": {
+    "/api/banksoal": {
+      "get": {
+        "summary": "Get Bank Soal",
+        "description": "Get Bank Soal based on query parameters (jenis_soal, kurikulum, kelas, mapel)",
+        "tags": ["Bank Soal"],
+        "parameters": [
+          {
+            "name": "jenis_soal",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["PTS", "PAS"]
+            },
+            "description": "Type of soal (PTS or PAS)",
+            "required": false
+          },
+          {
+            "name": "kurikulum",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["KURTILAS", "KURMER", "KMA"]
+            },
+            "description": "Kurikulum",
+            "required": false
+          },
+          {
+            "name": "kelas",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Kelas",
+            "required": false
+          },
+          {
+            "name": "mapel",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Mapel (Subject)",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "JENIS_SOAL": { "type": "string" },
+                      "KURIKULUM": { "type": "string" },
+                      "KELAS": { "type": "integer" },
+                      "MAPEL": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/kurikulum-banksoal": {
+      "get": {
+        "summary": "Get Kurikulum List",
+        "tags": ["Bank Soal"],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "KURIKULUM": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/jenjang-banksoal": {
+      "get": {
+        "summary": "Get Jenjang List",
+        "description": "Get Jenjang for Bank Soal",
+        "tags": ["Bank Soal"],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "JENJANG": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/kelas-banksoal": {
+      "get": {
+        "summary": "Get Kelas List",
+        "description": "Get Kelas for Bank Soal",
+        "tags": ["Bank Soal"],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "KELAS": { "type": "integer" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/mapel-banksoal": {
+      "get": {
+        "summary": "Get Mapel List",
+        "description": "Get Mapel for Bank Soal",
+        "tags": ["Bank Soal"],
+        "parameters": [
+          {
+            "name": "jenjang",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["SD", "SMP", "SMA", "SMK", "MI", "MTS", "MA"]
+              }
+            },
+            "description": "Jenjang (grade levels)",
+            "required": false
+          },
+          {
+            "name": "kurikulum",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["KURTILAS", "KURMER", "KMA"]
+            },
+            "description": "Kurikulum",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "MAPEL": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/jenjang-materi": {
+      "get": {
+        "summary": "Get Jenjang Materi",
+        "tags": ["Materi Digital"],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id_jurusan": { "type": "string" },
+                      "jurusan": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/kelas-materi": {
+      "get": {
+        "summary": "Get Kelas Materi",
+        "tags": ["Materi Digital"],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id_kelas": { "type": "string" },
+                      "kelas": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/mapel-materi": {
+      "get": {
+        "summary": "Get Mapel Materi",
+        "tags": ["Materi Digital"],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id_mapel": { "type": "string" },
+                      "mapel": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/materi": {
+      "get": {
+        "summary": "Get Materies",
+        "tags": ["Materi Digital"],
+        "parameters": [
+          {
+            "name": "id_jurusan",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Jurusan ID",
+            "required": false
+          },
+          {
+            "name": "id_kelas",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Kelas ID",
+            "required": false
+          },
+          {
+            "name": "id_mapel",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Mapel ID",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "jurusan": { "type": "string" },
+                      "kelas": { "type": "string" },
+                      "mapel": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/books": {
+      "get": {
+        "summary": "Get Books",
+        "tags": ["E-Book Kurikulum Merdeka"],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "allowEmptyValue": true,
+            "description": "Search query",
+            "required": false
+          },
+          {
+            "name": "jenjang",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["SD", "SMP", "SMA", "SMK", "MI", "MTS", "MA"]
+            },
+            "description": "Jenjang (grade levels)",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "judul": { "type": "string" },
+                      "isi": { "type": "string" },
+                      "pdf": { "type": "string" },
+                      "cover": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/healthcheck": {
+      "get": {
+        "summary": "Health Check",
+        "tags": ["Health Check"],
+        "responses": {
+          "200": {
+            "description": "Server is running",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
