@@ -7,7 +7,7 @@ import {
     getPtsPas,
 } from "../handlers/ptspas"
 import {
-    getJurusanMateri,
+    getJenjangMateri,
     getKelasMateri,
     getMapelMateri,
     getMateries,
@@ -23,7 +23,7 @@ api.get("/kelas-banksoal", ...getKelasPtsPas)
 api.get("/mapel-banksoal", ...getMapelPtsPas)
 
 api.get("/materi", ...getMateries)
-api.get("/jenjang-materi", ...getJurusanMateri)
+api.get("/jenjang-materi", ...getJenjangMateri)
 api.get("/kelas-materi", ...getKelasMateri)
 api.get("/mapel-materi", ...getMapelMateri)
 
