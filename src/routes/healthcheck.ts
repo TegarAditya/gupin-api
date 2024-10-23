@@ -12,6 +12,7 @@ healthcheck.get("/", async (c) => {
             return c.json({ message: "OK" })
         }
     } catch (error) {
+        console.error(error)
         return c.json({ message: error }, 500)
     }
 })
