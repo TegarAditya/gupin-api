@@ -5,7 +5,8 @@ import { z } from "zod"
 
 const factory = createFactory()
 
-export const getJurusanMateri = factory.createHandlers(async (c) => {
+// GET /api/jenjang-materi
+export const getJenjangMateri = factory.createHandlers(async (c) => {
     const jurusan = await db.tb_master_jurusan.findMany({
         select: {
             id_jurusan: true,
@@ -15,6 +16,7 @@ export const getJurusanMateri = factory.createHandlers(async (c) => {
     return c.json(jurusan, 200)
 })
 
+// GET /api/kelas-materi
 export const getKelasMateri = factory.createHandlers(async (c) => {
     const kelas = await db.tb_master_kelas.findMany({
         select: {
@@ -25,6 +27,7 @@ export const getKelasMateri = factory.createHandlers(async (c) => {
     return c.json(kelas, 200)
 })
 
+// GET /api/mapel-materi
 export const getMapelMateri = factory.createHandlers(async (c) => {
     const mapel = await db.tb_master_mapel.findMany({
         select: {
@@ -35,6 +38,7 @@ export const getMapelMateri = factory.createHandlers(async (c) => {
     return c.json(mapel, 200)
 })
 
+// GET /api/materi
 export const getMateries = factory.createHandlers(
     zValidator(
         "query",
@@ -46,12 +50,44 @@ export const getMateries = factory.createHandlers(
     ),
     async (c) => {
         const materies = await db.tb_materi_pusat.findMany({
-            include: {
-                jurusan: true,
-                kelas: true,
-                mapel: true,
+            where: {
+                id_jurusan: Number(c.req.query("id_jurusan")) || undefined,
+                id_kelas: Number(c.req.query("id_kelas")) || undefined,
+                id_mapel: Number(c.req.query("id_mapel")) || undefined,
+            },
+            select: {
+                jurusan: {
+                    select: {
+                        jurusan: true,
+                    },
+                },
+                kelas: {
+                    select: {
+                        kelas: true,
+                    },
+                },
+                mapel: {
+                    select: {
+                        mapel: true,
+                    },
+                },
+                judul_materi: true,
+                materi: true,
+                link_youtube: true,
             },
         })
-        return c.json(materies, 200)
+
+        const data = materies.map((value) => {
+            return {
+                jurusan: value.jurusan.jurusan,
+                kelas: value.kelas.kelas,
+                mapel: value.mapel.mapel,
+                judul_materi: value.judul_materi,
+                materi: value.materi,
+                link_youtube: value.link_youtube,
+            }
+        })
+
+        return c.json(data, 200)
     }
 )
