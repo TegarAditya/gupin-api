@@ -57,7 +57,9 @@ export const getKurikulumPtsPas = factory.createHandlers(async (c) => {
             distinct: ["KURIKULUM"],
         })
         return c.json(kurikulum, 200)
-    } catch (error) {}
+    } catch (error) {
+        return c.json({ message: error }, 500)
+    }
 })
 
 // GET /api/jenjang-banksoal
@@ -70,7 +72,9 @@ export const getJenjangPtsPas = factory.createHandlers(async (c) => {
             distinct: ["JENJANG"],
         })
         return c.json(jenjang, 200)
-    } catch (error) {}
+    } catch (error) {
+        return c.json({ message: error }, 500)
+    }
 })
 
 // GET /api/kelas-banksoal
@@ -86,7 +90,9 @@ export const getKelasPtsPas = factory.createHandlers(async (c) => {
             distinct: ["KELAS"],
         })
         return c.json(kelas, 200)
-    } catch (error) {}
+    } catch (error) {
+        return c.json({ message: error }, 500)
+    }
 })
 
 // GET /api/mapel-banksoal
@@ -108,15 +114,15 @@ export const getMapelPtsPas = factory.createHandlers(
                 select: {
                     MAPEL: true,
                 },
-                orderBy: {
-                    MAPEL: "asc",
-                },
+                orderBy: [{ JENJANG: "desc" }, { MAPEL: "asc" }],
                 distinct: ["MAPEL"],
             })
 
             if (mapel.length === 0) not_found(c)
 
             return c.json(mapel, 200)
-        } catch (error) {}
+        } catch (error) {
+            return c.json({ message: error }, 500)
+        }
     }
 )
