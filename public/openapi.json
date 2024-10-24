@@ -222,6 +222,16 @@
             },
             "description": "Kurikulum",
             "required": false
+          },
+          {
+            "name": "jenis_soal",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["PTS", "PAS"]
+            },
+            "description": "Type of soal (PTS or PAS)",
+            "required": false
           }
         ],
         "responses": {

@@ -104,6 +104,7 @@ export const getMapelPtsPas = factory.createHandlers(
         z.object({
             jenjang: z.union([jenjangEnum, z.array(jenjangEnum)]).optional(),
             kurikulum: kurikulumEnum.optional(),
+            jenis_soal: jenisSoalEnum.optional(),
         })
     ),
     async (c) => {
@@ -111,6 +112,7 @@ export const getMapelPtsPas = factory.createHandlers(
             const mapel = await db.ptspas.findMany({
                 where: {
                     JENJANG: { in: c.req.queries("jenjang") || undefined },
+                    JENIS_SOAL: c.req.query("jenis_soal") || undefined,
                     KURIKULUM: c.req.query("kurikulum") || undefined,
                 },
                 select: {
