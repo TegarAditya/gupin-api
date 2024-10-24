@@ -23,6 +23,7 @@ export const getPtsPas = factory.createHandlers(
         z.object({
             jenis_soal: jenisSoalEnum.optional(),
             kurikulum: kurikulumEnum.optional(),
+            jenjang: z.union([jenjangEnum, z.array(jenjangEnum)]).optional(),
             kelas: z.coerce.number().optional(),
             mapel: z.string().optional(),
         })
@@ -33,6 +34,7 @@ export const getPtsPas = factory.createHandlers(
                 where: {
                     JENIS_SOAL: c.req.query("jenis_soal") || undefined,
                     KURIKULUM: c.req.query("kurikulum") || undefined,
+                    JENJANG: { in: c.req.queries("jenjang") || undefined },
                     KELAS: c.req.query("kelas") || undefined,
                     MAPEL: c.req.query("mapel") || undefined,
                 },
@@ -112,6 +114,7 @@ export const getMapelPtsPas = factory.createHandlers(
                     KURIKULUM: c.req.query("kurikulum") || undefined,
                 },
                 select: {
+                    JENJANG: true,
                     MAPEL: true,
                 },
                 orderBy: [{ JENJANG: "desc" }, { MAPEL: "asc" }],

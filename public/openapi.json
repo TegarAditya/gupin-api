@@ -51,6 +51,19 @@
             "required": false
           },
           {
+            "name": "jenjang",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["SD", "SMP", "SMA", "SMK", "MI", "MTS", "MA"]
+              }
+            },
+            "description": "Jenjang",
+            "required": false
+          },
+          {
             "name": "kelas",
             "in": "query",
             "schema": {
