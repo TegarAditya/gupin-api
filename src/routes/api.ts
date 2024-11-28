@@ -1,10 +1,10 @@
 import { Hono } from "hono"
 import {
-    getJenjangPtsPas,
-    getKelasPtsPas,
-    getKurikulumPtsPas,
-    getMapelPtsPas,
-    getPtsPas,
+    getJenjangBankSoal,
+    getKelasBankSoal,
+    getKurikulumBankSoal,
+    getMapelBankSoal,
+    getBankSoal,
 } from "../handlers/ptspas"
 import {
     getJenjangMateri,
@@ -13,14 +13,15 @@ import {
     getMateries,
 } from "../handlers/materi"
 import { getBooks } from "../handlers/books"
+import { getUserById } from "../handlers/user"
 
 const api = new Hono()
 
-api.get("/banksoal", ...getPtsPas)
-api.get("/kurikulum-banksoal", ...getKurikulumPtsPas)
-api.get("/jenjang-banksoal", ...getJenjangPtsPas)
-api.get("/kelas-banksoal", ...getKelasPtsPas)
-api.get("/mapel-banksoal", ...getMapelPtsPas)
+api.get("/banksoal", ...getBankSoal)
+api.get("/kurikulum-banksoal", ...getKurikulumBankSoal)
+api.get("/jenjang-banksoal", ...getJenjangBankSoal)
+api.get("/kelas-banksoal", ...getKelasBankSoal)
+api.get("/mapel-banksoal", ...getMapelBankSoal)
 
 api.get("/materi", ...getMateries)
 api.get("/jenjang-materi", ...getJenjangMateri)
@@ -28,5 +29,7 @@ api.get("/kelas-materi", ...getKelasMateri)
 api.get("/mapel-materi", ...getMapelMateri)
 
 api.get("/books", ...getBooks)
+
+api.get("/user/:id", ...getUserById)
 
 export default api
