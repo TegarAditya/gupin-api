@@ -17,7 +17,7 @@ type JenisSoal = z.infer<typeof jenisSoalEnum>
 const not_found = (c: Context) => c.json({ message: "Data not found" }, 404)
 
 // GET /api/banksoal
-export const getPtsPas = factory.createHandlers(
+export const getBankSoal = factory.createHandlers(
     zValidator(
         "query",
         z.object({
@@ -50,7 +50,7 @@ export const getPtsPas = factory.createHandlers(
 )
 
 // GET /api/kurikulum-banksoal
-export const getKurikulumPtsPas = factory.createHandlers(async (c) => {
+export const getKurikulumBankSoal = factory.createHandlers(async (c) => {
     try {
         const kurikulum = await db.ptspas.findMany({
             select: {
@@ -65,7 +65,7 @@ export const getKurikulumPtsPas = factory.createHandlers(async (c) => {
 })
 
 // GET /api/jenjang-banksoal
-export const getJenjangPtsPas = factory.createHandlers(async (c) => {
+export const getJenjangBankSoal = factory.createHandlers(async (c) => {
     try {
         const jenjang = await db.ptspas.findMany({
             select: {
@@ -80,7 +80,7 @@ export const getJenjangPtsPas = factory.createHandlers(async (c) => {
 })
 
 // GET /api/kelas-banksoal
-export const getKelasPtsPas = factory.createHandlers(async (c) => {
+export const getKelasBankSoal = factory.createHandlers(async (c) => {
     try {
         const kelas = await db.ptspas.findMany({
             select: {
@@ -91,14 +91,19 @@ export const getKelasPtsPas = factory.createHandlers(async (c) => {
             },
             distinct: ["KELAS"],
         })
-        return c.json(kelas, 200)
+
+        const data = kelas.sort(
+            (a, b) => parseInt(a.KELAS || "0") - parseInt(b.KELAS || "0")
+        )
+
+        return c.json(data, 200)
     } catch (error) {
         return c.json({ message: error }, 500)
     }
 })
 
 // GET /api/mapel-banksoal
-export const getMapelPtsPas = factory.createHandlers(
+export const getMapelBankSoal = factory.createHandlers(
     zValidator(
         "query",
         z.object({
