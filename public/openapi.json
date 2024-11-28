@@ -92,10 +92,18 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "JENIS_SOAL": { "type": "string" },
+                      "id_ptspas": { "type": "integer" },
                       "KURIKULUM": { "type": "string" },
+                      "MAPEL": { "type": "string" },
                       "KELAS": { "type": "integer" },
-                      "MAPEL": { "type": "string" }
+                      "JENIS_SOAL": { "type": "string" },
+                      "LINK_PDF": { "type": "string" },
+                      "LINK_WORD": { "type": "string" },
+                      "KISI_KISI_1": { "type": "string" },
+                      "KISI_KISI_2": { "type": "string" },
+                      "KISI_KISI_3": { "type": "string" },
+                      "KISI_KISI_4": { "type": "string" },
+                      "KODE": { "type": "string" }
                     }
                   }
                 }
