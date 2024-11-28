@@ -7,6 +7,10 @@
   },
   "tags": [
     {
+      "name": "User",
+      "description": "API for fetching User"
+    },
+    {
       "name": "Bank Soal",
       "description": "API for fetching Bank Soal"
     },
@@ -24,6 +28,86 @@
     }
   ],
   "paths": {
+    "/api/user/{id}": {
+      "get": {
+        "summary": "Get User by ID",
+        "tags": ["User"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "description": "User ID",
+            "required": true
+          },
+          {
+            "name": "kode_sekolah",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Kode Sekolah",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nis": { "type": "string" },
+                    "nama_siswa": { "type": "string" },
+                    "kode_sekolah": { "type": "string" },
+                    "aktif": { "type": "string", "enum": ["Y", "N"] },
+                    "id_jurusan": { "type": "integer" },
+                    "id_kelas": { "type": "integer" },
+                    "jurusan": { "type": "string" },
+                    "kelas": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User is not active"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string", "example": "User not found" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
     "/api/banksoal": {
       "get": {
         "summary": "Get Bank Soal",
@@ -121,7 +205,7 @@
     },
     "/api/kurikulum-banksoal": {
       "get": {
-        "summary": "Get Kurikulum List",
+        "summary": "Get Kurikulum Bank Soal",
         "tags": ["Bank Soal"],
         "responses": {
           "200": {
@@ -148,7 +232,7 @@
     },
     "/api/jenjang-banksoal": {
       "get": {
-        "summary": "Get Jenjang List",
+        "summary": "Get Jenjang Bank Soal",
         "description": "Get Jenjang for Bank Soal",
         "tags": ["Bank Soal"],
         "responses": {
@@ -176,7 +260,7 @@
     },
     "/api/kelas-banksoal": {
       "get": {
-        "summary": "Get Kelas List",
+        "summary": "Get Kelas Bank Soal",
         "description": "Get Kelas for Bank Soal",
         "tags": ["Bank Soal"],
         "responses": {
@@ -204,7 +288,7 @@
     },
     "/api/mapel-banksoal": {
       "get": {
-        "summary": "Get Mapel List",
+        "summary": "Get Mapel Bank Soal",
         "description": "Get Mapel for Bank Soal",
         "tags": ["Bank Soal"],
         "parameters": [
@@ -261,6 +345,68 @@
           },
           "404": {
             "description": "Data not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+
+    "/api/materi": {
+      "get": {
+        "summary": "Get Materi",
+        "tags": ["Materi Digital"],
+        "parameters": [
+          {
+            "name": "id_jurusan",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Jurusan ID",
+            "required": false
+          },
+          {
+            "name": "id_kelas",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Kelas ID",
+            "required": false
+          },
+          {
+            "name": "id_mapel",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Mapel ID",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "jurusan": { "type": "string" },
+                      "kelas": { "type": "string" },
+                      "mapel": { "type": "string" },
+                      "judul_materi": { "type": "string" },
+                      "materi": { "type": "string" },
+                      "link_youtube": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
           },
           "500": {
             "description": "Server error"
@@ -339,64 +485,6 @@
                     "type": "object",
                     "properties": {
                       "id_mapel": { "type": "string" },
-                      "mapel": { "type": "string" }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error"
-          }
-        }
-      }
-    },
-    "/api/materi": {
-      "get": {
-        "summary": "Get Materies",
-        "tags": ["Materi Digital"],
-        "parameters": [
-          {
-            "name": "id_jurusan",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Jurusan ID",
-            "required": false
-          },
-          {
-            "name": "id_kelas",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Kelas ID",
-            "required": false
-          },
-          {
-            "name": "id_mapel",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Mapel ID",
-            "required": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "jurusan": { "type": "string" },
-                      "kelas": { "type": "string" },
                       "mapel": { "type": "string" }
                     }
                   }
