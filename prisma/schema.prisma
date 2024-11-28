@@ -172,6 +172,7 @@ model tb_master_jurusan {
   kode_sekolah    String            @db.VarChar(30)
   tb_roleguru     tb_roleguru[]
   tb_materi_pusat tb_materi_pusat[]
+  tb_siswa        tb_siswa[]
 }
 
 model tb_master_kelas {
@@ -180,6 +181,7 @@ model tb_master_kelas {
   kode_sekolah    String            @db.VarChar(30)
   tb_roleguru     tb_roleguru[]
   tb_materi_pusat tb_materi_pusat[]
+  tb_siswa        tb_siswa[]
 }
 
 model tb_master_mapel {
@@ -318,20 +320,22 @@ model tb_sekolah {
 }
 
 model tb_siswa {
-  id_siswa     Int              @id @default(autoincrement())
-  nis          String           @db.VarChar(15)
-  nama_siswa   String           @db.VarChar(120)
-  jk           String           @db.VarChar(30)
-  password     String           @db.VarChar(255)
-  status       String           @db.VarChar(15)
-  aktif        String           @db.VarChar(30)
-  tingkat      String           @db.VarChar(20)
-  foto         String?          @db.VarChar(255)
+  id_siswa     Int               @id @default(autoincrement())
+  nis          String            @db.VarChar(15)
+  nama_siswa   String            @db.VarChar(120)
+  jk           String            @db.VarChar(30)
+  password     String            @db.VarChar(255)
+  status       String            @db.VarChar(15)
+  aktif        String            @db.VarChar(30)
+  tingkat      String            @db.VarChar(20)
+  foto         String?           @db.VarChar(255)
   id_kelas     Int
   id_jurusan   Int
   confirm      tb_siswa_confirm
-  kode_sekolah String           @db.VarChar(30)
-  status_login String           @db.VarChar(200)
+  kode_sekolah String            @db.VarChar(30)
+  status_login String            @db.VarChar(200)
+  kelas        tb_master_kelas   @relation(fields: [id_kelas], references: [id_kelas])
+  jurusan      tb_master_jurusan @relation(fields: [id_jurusan], references: [id_jurusan])
 
   @@index([id_jurusan], map: "id_jurusan")
   @@index([id_kelas], map: "id_kelas")
