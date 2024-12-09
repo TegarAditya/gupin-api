@@ -40,7 +40,27 @@ export const getBankSoal = factory.createHandlers(
                 },
             })
 
-            if (ptspas.length === 0) not_found(c)
+            if (!ptspas) return not_found(c)
+
+            return c.json(ptspas, 200)
+        } catch (error) {
+            return c.json({ message: error }, 500)
+        }
+    }
+)
+
+// GET /api/banksoal/:id
+export const getBankSoalById = factory.createHandlers(
+    zValidator("param", z.object({ id: z.coerce.number() })),
+    async (c) => {
+        try {
+            const ptspas = await db.ptspas.findUnique({
+                where: {
+                    id_ptspas: parseInt(c.req.param("id")),
+                },
+            })
+
+            if (!ptspas) return not_found(c)
 
             return c.json(ptspas, 200)
         } catch (error) {
