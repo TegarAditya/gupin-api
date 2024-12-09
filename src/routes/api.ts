@@ -5,6 +5,7 @@ import {
     getKurikulumBankSoal,
     getMapelBankSoal,
     getBankSoal,
+    getBankSoalById,
 } from "../handlers/ptspas"
 import {
     getJenjangMateri,
@@ -18,6 +19,7 @@ import { getUserById } from "../handlers/user"
 const api = new Hono()
 
 api.get("/banksoal", ...getBankSoal)
+api.get("/banksoal/:id", ...getBankSoalById)
 api.get("/kurikulum-banksoal", ...getKurikulumBankSoal)
 api.get("/jenjang-banksoal", ...getJenjangBankSoal)
 api.get("/kelas-banksoal", ...getKelasBankSoal)
