@@ -203,6 +203,55 @@
         }
       }
     },
+    "/api/banksoal/{id}": {
+      "get": {
+        "summary": "Get Bank Soal by ID",
+        "tags": ["Bank Soal"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Bank Soal ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id_ptspas": { "type": "integer" },
+                    "KURIKULUM": { "type": "string" },
+                    "MAPEL": { "type": "string" },
+                    "KELAS": { "type": "integer" },
+                    "JENIS_SOAL": { "type": "string" },
+                    "LINK_PDF": { "type": "string" },
+                    "LINK_WORD": { "type": "string" },
+                    "KISI_KISI_1": { "type": "string" },
+                    "KISI_KISI_2": { "type": "string" },
+                    "KISI_KISI_3": { "type": "string" },
+                    "KISI_KISI_4": { "type": "string" },
+                    "KODE": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
     "/api/kurikulum-banksoal": {
       "get": {
         "summary": "Get Kurikulum Bank Soal",
