@@ -56,6 +56,7 @@ export const getMateries = factory.createHandlers(
                 id_mapel: Number(c.req.query("id_mapel")) || undefined,
             },
             select: {
+                id_materi_pusat: true,
                 jurusan: {
                     select: {
                         jurusan: true,
@@ -72,18 +73,19 @@ export const getMateries = factory.createHandlers(
                     },
                 },
                 judul_materi: true,
-                materi: true,
+                nama_file: true,
                 link_youtube: true,
             },
         })
 
         const data = materies.map((value) => {
             return {
+                id: value.id_materi_pusat,
                 jurusan: value.jurusan.jurusan,
                 kelas: value.kelas.kelas,
                 mapel: value.mapel.mapel,
                 judul_materi: value.judul_materi,
-                materi: value.materi,
+                materi: value.nama_file,
                 link_youtube: value.link_youtube,
             }
         })
