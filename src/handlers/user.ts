@@ -2,6 +2,7 @@ import { zValidator } from "@hono/zod-validator"
 import { createFactory } from "hono/factory"
 import { z } from "zod"
 import db from "../plugins/database"
+import { romanToInt } from "../utils"
 
 const factory = createFactory()
 
@@ -45,6 +46,11 @@ export const getUserById = factory.createHandlers(
             if (user.aktif !== "Y")
                 return c.json({ message: "User is not active" }, 403)
 
+            const getUserClass = (input: string): number => {
+                const roman = input.split(" - ")[0].trim()
+                return romanToInt(roman)
+            }
+
             const data = {
                 nis: user?.nis,
                 nama_siswa: user?.nama_siswa,
@@ -53,7 +59,7 @@ export const getUserById = factory.createHandlers(
                 id_jurusan: user?.id_jurusan,
                 id_kelas: user?.id_kelas,
                 jurusan: user?.jurusan.jurusan,
-                kelas: user?.kelas.kelas,
+                kelas: getUserClass(user?.kelas.kelas),
             }
 
             return c.json(data, 200)
